@@ -1,4 +1,7 @@
-use crate::components::alert::{AlertComponent, Props as AlertProps};
+use crate::components::{
+    alert::{AlertComponent, Props as AlertProps},
+    spinner::Spinner,
+};
 use yew::prelude::*;
 use yew_router::prelude::*;
 use yewdux::prelude::use_store;
@@ -11,6 +14,7 @@ pub fn app() -> Html {
     let (store, _) = use_store::<Store>();
     let message = store.alert_input.alert_message.clone();
     let show_alert = store.alert_input.show_alert;
+    let is_page_loading = store.page_loading.clone();
 
     let alert_props = AlertProps {
         message,
@@ -24,6 +28,11 @@ pub fn app() -> Html {
                         message={alert_props.message}
                         delay_ms={alert_props.delay_ms}
                      />
+                }
+                if is_page_loading {
+                    <div class="pt-4 pl-2 top-[5.5rem] fixed">
+                        <Spinner width={Some(5)} height={Some(5)} color="text-ct-yellow-600" />
+                    </div>
                 }
         </BrowserRouter>
     }

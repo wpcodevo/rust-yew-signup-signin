@@ -2,7 +2,7 @@ use crate::{
     api::user_api::api_user_info,
     components::header::Header,
     router,
-    store::{set_auth_user, set_show_alert, Store},
+    store::{set_auth_user, set_page_loading, set_show_alert, Store},
 };
 use yew::prelude::*;
 use yew_router::prelude::use_navigator;
@@ -12,29 +12,31 @@ use yewdux::prelude::*;
 pub fn profile_page() -> Html {
     let (store, dispatch) = use_store::<Store>();
     let user = store.auth_user.clone();
-    let token = store.token.clone();
     let navigator = use_navigator().unwrap();
 
-    use_effect(move || {
-        let dispatch = dispatch.clone();
-        if token.is_none() {
-            navigator.push(&router::Route::LoginPage);
-        }
-        wasm_bindgen_futures::spawn_local(async move {
-            let response = api_user_info().await;
-            match response {
-                Ok(user) => set_auth_user(Some(user), dispatch),
-                Err(e) => {
-                    if e.contains("You are not logged in") {
-                        navigator.push(&router::Route::LoginPage);
+    use_effect_with_deps(
+        move |_| {
+            let dispatch = dispatch.clone();
+            wasm_bindgen_futures::spawn_local(async move {
+                set_page_loading(true, dispatch.clone());
+                let response = api_user_info().await;
+                match response {
+                    Ok(user) => {
+                        set_page_loading(false, dispatch.clone());
+                        set_auth_user(Some(user), dispatch);
                     }
-                    set_show_alert(e.to_string(), dispatch);
+                    Err(e) => {
+                        set_page_loading(false, dispatch.clone());
+                        if e.contains("You are not logged in") {
+                            navigator.push(&router::Route::LoginPage);
+                        }
+                        set_show_alert(e.to_string(), dispatch);
+                    }
                 }
-            }
-        });
-
-        || {}
-    });
+            });
+        },
+        (),
+    );
 
     html! {
     <>

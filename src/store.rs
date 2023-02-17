@@ -13,7 +13,6 @@ pub struct AlertInput {
 pub struct Store {
     pub auth_user: Option<User>,
     pub page_loading: bool,
-    pub token: Option<String>,
     pub alert_input: AlertInput,
 }
 
@@ -26,12 +25,6 @@ pub fn set_page_loading(loading: bool, dispatch: Dispatch<Store>) {
 pub fn set_auth_user(user: Option<User>, dispatch: Dispatch<Store>) {
     dispatch.reduce_mut(move |store| {
         store.auth_user = user;
-    })
-}
-
-pub fn set_auth_token(token: String, dispatch: Dispatch<Store>) {
-    dispatch.reduce_mut(move |store| {
-        store.token = Some(token);
     })
 }
 

@@ -59,7 +59,7 @@ pub fn form_input_component(props: &Props) -> Html {
       </label>
       <input
         type={input_type}
-        placeholder=" "
+        placeholder=""
         class="block w-full rounded-2xl appearance-none focus:outline-none py-2 px-4"
         ref={props.input_ref.clone()}
         onchange={onchange}

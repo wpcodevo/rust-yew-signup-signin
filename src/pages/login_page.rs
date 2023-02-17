@@ -5,7 +5,7 @@ use std::rc::Rc;
 use crate::api::user_api::api_login_user;
 use crate::components::{form_input::FormInput, loading_button::LoadingButton};
 use crate::router::{self, Route};
-use crate::store::{set_auth_token, set_page_loading, set_show_alert, Store};
+use crate::store::{set_page_loading, set_show_alert, Store};
 
 use serde::{Deserialize, Serialize};
 use validator::{Validate, ValidationErrors};
@@ -130,9 +130,8 @@ pub fn login_page() -> Html {
                         let form_json = serde_json::to_string(&form_data).unwrap();
                         let res = api_login_user(&form_json).await;
                         match res {
-                            Ok(data) => {
-                                set_page_loading(false, dispatch.clone());
-                                set_auth_token(data.token, dispatch);
+                            Ok(_) => {
+                                set_page_loading(false, dispatch);
                                 navigator.push(&router::Route::ProfilePage);
                             }
                             Err(e) => {

@@ -11,7 +11,7 @@ use yewdux::prelude::*;
 #[function_component(Header)]
 pub fn header_component() -> Html {
     let (store, dispatch) = use_store::<Store>();
-    let token = store.token.clone();
+    let user = store.auth_user.clone();
     let navigator = use_navigator().unwrap();
 
     let handle_logout = {
@@ -50,7 +50,7 @@ pub fn header_component() -> Html {
             <li>
               <Link<Route> to={Route::HomePage} classes="text-ct-dark-600">{"Home"}</Link<Route>>
             </li>
-            if token.is_some() {
+            if user.is_some() {
                <>
                 <li>
                   <Link<Route> to={Route::ProfilePage} classes="text-ct-dark-600">{"Profile"}</Link<Route>>
