@@ -30,7 +30,7 @@ pub fn loading_button_component(props: &Props) -> Html {
     >
       if props.loading {
         <div class="flex items-center gap-3">
-          <Spinner width={Some(10)} height={Some(10)} />
+          <Spinner />
           <span class="text-slate-500 inline-block">{"Loading..."}</span>
         </div>
       }else{

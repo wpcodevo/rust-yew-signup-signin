@@ -2,16 +2,19 @@ use yew::prelude::*;
 
 #[derive(Debug, Properties, PartialEq)]
 pub struct Props {
-    pub width: Option<u32>,
-    pub height: Option<u32>,
+    pub width: Option<String>,
+    pub height: Option<String>,
     pub color: Option<String>,
     pub bg_color: Option<String>,
 }
 
 #[function_component(Spinner)]
 pub fn spinner_component(props: &Props) -> Html {
-    let width = props.width.unwrap_or(5);
-    let height = props.height.unwrap_or(5);
+    let width = props.width.clone().unwrap_or_else(|| "1.25rem".to_string());
+    let height = props
+        .height
+        .clone()
+        .unwrap_or_else(|| "1.25rem".to_string());
     let color = props
         .color
         .clone()
@@ -25,9 +28,10 @@ pub fn spinner_component(props: &Props) -> Html {
     <svg
       role="status"
       class={format!(
-        "w-5 h-5 {} {} mr-2 {} animate-spin dark:text-gray-600 {}",
-        width,height,color, bg_color
+        "mr-2 {} animate-spin dark:text-gray-600 {} h-5",
+        color, bg_color
       )}
+      style={format!("height:{};width:{}", width, height)}
       viewBox="0 0 100 101"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
