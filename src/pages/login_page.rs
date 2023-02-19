@@ -55,7 +55,7 @@ pub fn login_page() -> Html {
     let email_input_ref = NodeRef::default();
     let password_input_ref = NodeRef::default();
 
-    let on_input_change = {
+    let validate_input_on_blur = {
         let cloned_form = form.clone();
         let cloned_validation_errors = validation_errors.clone();
         Callback::from(move |(name, value): (String, String)| {
@@ -161,8 +161,8 @@ pub fn login_page() -> Html {
             onsubmit={on_submit}
             class="max-w-md w-full mx-auto overflow-hidden shadow-lg bg-ct-dark-200 rounded-2xl p-8 space-y-5"
           >
-            <FormInput label="Email" name="email" input_type="email" input_ref={email_input_ref} handle_onchange={handle_email_input} errors={&*validation_errors} handle_on_input_change={on_input_change.clone()} />
-            <FormInput label="Password" name="password" input_type="password" input_ref={password_input_ref} handle_onchange={handle_password_input} errors={&*validation_errors} handle_on_input_change={on_input_change.clone()}/>
+            <FormInput label="Email" name="email" input_type="email" input_ref={email_input_ref} handle_onchange={handle_email_input} errors={&*validation_errors} handle_on_input_blur={validate_input_on_blur.clone()} />
+            <FormInput label="Password" name="password" input_type="password" input_ref={password_input_ref} handle_onchange={handle_password_input} errors={&*validation_errors} handle_on_input_blur={validate_input_on_blur.clone()}/>
 
             <div class="text-right">
               <a href="#">

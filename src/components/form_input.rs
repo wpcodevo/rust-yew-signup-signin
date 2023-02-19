@@ -12,7 +12,7 @@ pub struct Props {
     pub name: String,
     pub input_ref: NodeRef,
     pub handle_onchange: Callback<String>,
-    pub handle_on_input_change: Callback<(String, String)>,
+    pub handle_on_input_blur: Callback<(String, String)>,
     pub errors: Rc<RefCell<ValidationErrors>>,
 }
 
@@ -41,14 +41,14 @@ pub fn form_input_component(props: &Props) -> Html {
         handle_onchange.emit(value);
     });
 
-    let handle_on_input_change = props.handle_on_input_change.clone();
-    let on_input_change = {
+    let handle_on_input_blur = props.handle_on_input_blur.clone();
+    let on_blur = {
         let cloned_input_name = props.name.clone();
         Callback::from(move |event: FocusEvent| {
             let input_name = cloned_input_name.clone();
             let target = event.target().unwrap();
             let value = target.unchecked_into::<HtmlInputElement>().value();
-            handle_on_input_change.emit((input_name, value));
+            handle_on_input_blur.emit((input_name, value));
         })
     };
 
@@ -63,7 +63,7 @@ pub fn form_input_component(props: &Props) -> Html {
         class="block w-full rounded-2xl appearance-none focus:outline-none py-2 px-4"
         ref={props.input_ref.clone()}
         onchange={onchange}
-        onblur={on_input_change}
+        onblur={on_blur}
       />
     <span class="text-red-500 text-xs pt-1 block">
         {error_message}
