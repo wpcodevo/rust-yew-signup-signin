@@ -18,7 +18,7 @@ pub fn app() -> Html {
 
     let alert_props = AlertProps {
         message,
-        delay_ms: 15000,
+        delay_ms: 5000,
     };
     html! {
         <BrowserRouter>
