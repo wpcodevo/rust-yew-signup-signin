@@ -27,10 +27,8 @@ pub fn profile_page() -> Html {
                     }
                     Err(e) => {
                         set_page_loading(false, dispatch.clone());
-                        if e.contains("You are not logged in") {
-                            navigator.push(&router::Route::LoginPage);
-                        }
                         set_show_alert(e.to_string(), dispatch);
+                        navigator.push(&router::Route::LoginPage);
                     }
                 }
             });
